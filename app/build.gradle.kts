@@ -1,3 +1,11 @@
+import java.util.Properties
+
+// local.properties 직접 읽기
+val localProperties = Properties().apply {
+    val localPropertiesFile = rootProject.file("local.properties")
+    if (localPropertiesFile.exists()) load(localPropertiesFile.inputStream())
+}
+
 plugins {
     alias(libs.plugins.android.application)
     alias(libs.plugins.kotlin.android)
@@ -9,7 +17,7 @@ plugins {
 
 android {
     namespace   = "com.newslens"
-    compileSdk  = 35
+    compileSdk  = 36
 
     defaultConfig {
         applicationId   = "com.newslens.app"
@@ -20,8 +28,10 @@ android {
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
-        val baseUrl = project.findProperty("BASE_URL") as? String
-            ?: "https://api.newslens.com/"
+        val baseUrl = localProperties.getProperty("BASE_URL")
+            ?: error("BASE_URL is not set. Add BASE_URL to local.properties")
+        // local.properties에서 BASE_URL을 직접 읽어옴
+        // 없으면 빌드 실패 → null인 채로 빌드되는 실수 방지
         buildConfigField("String", "BASE_URL", "\"$baseUrl\"")
     }
 
@@ -56,7 +66,7 @@ android {
     }
 
     testOptions {
-        unitTests.isReturnDefaultValues    = true
+        unitTests.isReturnDefaultValues     = true
         unitTests.isIncludeAndroidResources = true
     }
 }
