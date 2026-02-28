@@ -164,3 +164,40 @@ git checkout -b hotfix/crash-on-cold-start
 - 1 브랜치 = 1 책임
 - 커밋 단위 = 동작 가능한 최소 변경
 - 로그만 봐도 변경 내용을 파악할 수 있게 작성
+
+---
+
+## 6. Workflow 다이어그램
+
+아래는 Issue → Branch → PR → Release 전체 흐름입니다.
+
+```
+Issue
+│
+│ feature / fix / refactor (from develop)
+↓
+│ PR → develop (Squash Merge)
+↓
+│ release/x.y.z (from develop)
+↓
+│ PR → main (Merge Commit)
+↓
+  Tag: vX.Y.Z
+```
+
+긴급 수정의 경우 :
+```
+main
+  │
+  ▼
+hotfix/*
+  │
+  ▼
+PR → main (Merge Commit)
+  │
+  ▼
+Tag
+  │
+  ▼
+develop 역반영
+```
