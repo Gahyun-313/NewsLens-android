@@ -1,0 +1,55 @@
+name: Auto-label PRs
+
+on:
+  pull_request:
+    types: [opened, reopened, synchronize, edited]
+
+permissions:
+  pull-requests: write
+  contents: read
+
+jobs:
+  label:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Add labels based on branch name
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const pr = context.payload.pull_request;
+            const headRef = pr.head.ref; // e.g. "feature/news-feed-screen"
+
+            // 브랜치 prefix → 라벨 매핑
+            const rules = [
+              { prefix: "feature/", label: "feature" },
+              { prefix: "fix/", label: "bug" },
+              { prefix: "refactor/", label: "refactor" },
+              { prefix: "docs/", label: "documentation" },
+              { prefix: "release/", label: "build" },
+              { prefix: "hotfix/", label: "bug" },
+            ];
+
+            const matched = rules.filter(r => headRef.startsWith(r.prefix)).map(r => r.label);
+
+            if (matched.length === 0) {
+              core.info(`No label matched for branch: ${headRef}`);
+              return;
+            }
+
+            // 이미 달린 라벨은 제외
+            const existing = pr.labels.map(l => l.name);
+            const labelsToAdd = matched.filter(l => !existing.includes(l));
+
+            if (labelsToAdd.length === 0) {
+              core.info("Matched labels already exist on PR.");
+              return;
+            }
+
+            core.info(`Adding labels: ${labelsToAdd.join(", ")}`);
+
+            await github.rest.issues.addLabels({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: pr.number,
+              labels: labelsToAdd,
+            });
