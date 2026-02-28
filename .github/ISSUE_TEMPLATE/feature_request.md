@@ -1,6 +1,6 @@
 ---
-name: 기능/구조 작업
-about: 기능 추가 또는 구조 개선
+name: "✨ Feature"
+about: "기능 추가/개선"
 title: "feat(scope): 작업 요약"
 labels: feature
 assignees: ""
