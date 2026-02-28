@@ -1,7 +1,7 @@
 # Contributing Guide
 
 NewsLens 프로젝트의 Git 운영 규칙입니다.  
-Compose + 멀티모듈 + MVVM 기준으로 작성되었습니다.
+Compose + MVVM 기준으로 작성되었습니다.
 
 ---
 
@@ -30,7 +30,7 @@ main ← hotfix/*
 ### 네이밍 규칙
 
 - 소문자 + 하이픈(`-`) 사용
-- 이슈 번호가 있으면 포함: `fix/123-feed-scroll-crash`
+- 가능하면 이슈 번호 포함: `fix/123-feed-scroll-crash`
 
 ```
 feature/news-feed-screen
@@ -80,16 +80,24 @@ hotfix/crash-on-cold-start
 
 ### Scope (책임 영역 기준, 1개만 사용)
 
+#### Feature 영역
+
 | Scope | 대상 |
 |-------|------|
-| `news-feed` | 뉴스 피드 화면/로직 |
+| `domestic-news` | 국내 뉴스 화면/로직 |
+| `international-news` | 해외 뉴스 화면/로직 |
 | `article-detail` | 기사 상세 화면/로직 |
-| `search` | 검색 화면/로직 |
+| `search` | 검색 기능 |
 | `reading-mission` | 읽기 미션 기능 |
-| `navigation` | NavGraph, BottomNav, 화면 이동 구조 |
-| `ui` | 공용 컴포넌트, Theme, 디자인 시스템 |
-| `state-management` | ViewModel, UiState, StateFlow/SharedFlow |
-| `build` | Gradle, 멀티모듈, 의존성, CI |
+
+#### 구조 영역
+
+| Scope | 대상 |
+|-------|------|
+| `navigation` | NavHost, Route, 화면 이동 구조 |
+| `ui` | 디자인 시스템 및 공용 컴포넌트 |
+| `state-management` | ViewModel, UiState, Flow 구조 |
+| `build` | Gradle, 의존성, 설정 |
 
 ### 예시
 
@@ -119,7 +127,6 @@ feat(navigation): bottom navigation 기반 app navigation graph 초기 구성
 - [ ] 커밋 메시지 규칙 준수
 - [ ] 빌드 및 실행 확인
 - [ ] UI 변경 시 스크린샷 첨부
-- [ ] 영향 범위 및 리스크 명시
 - [ ] 관련 이슈 연결
 
 ---
