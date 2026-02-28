@@ -1,5 +1,5 @@
 ---
-name: 📚 문서 수정
+name: 📚 documentation
 about: README, CONTRIBUTING, 가이드 등 문서를 수정할 때 사용합니다
 title: "docs: <수정 내용 요약>"
 labels: documentation
